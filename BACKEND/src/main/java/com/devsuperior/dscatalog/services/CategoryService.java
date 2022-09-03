@@ -1,16 +1,14 @@
 package com.devsuperior.dscatalog.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityNotFoundException;
-
 import com.devsuperior.dscatalog.services.exceptions.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
@@ -26,11 +24,11 @@ public class CategoryService {
 	private CategoryRepository repository;
 	
 	@Transactional(readOnly = true)
-	public List<CategoryDTO> findAll(){
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
 		
-		List<Category> list = repository.findAll();
+		Page<Category> list = repository.findAll(pageRequest);
 		
-		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+		return list.map(x -> new CategoryDTO(x));
 	
 	}
 
@@ -74,17 +72,6 @@ public class CategoryService {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
 	}
-
-//	
-//	public void delete(Long id){
-//		try{
-//			repository.deleteById(id);
-//			}catch(EmptyResultDataAccessException e){
-//				throw new ResourceAccessException("Id not found " + id);
-//			}catch(DataIntegrityViolationException g){
-//				throw new DatabaseException("Integrity violation");
-//			}
-//	}
 	
 	public void delete(Long id){
 		try{
