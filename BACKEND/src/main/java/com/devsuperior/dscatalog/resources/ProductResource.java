@@ -21,6 +21,8 @@ import com.devsuperior.dscatalog.services.ProductService;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value="/products")
 public class ProductResource {
@@ -51,7 +53,7 @@ public class ProductResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
 		
 		dto = service.insert(dto);
 		
@@ -61,7 +63,7 @@ public class ProductResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> update(@Valid @PathVariable Long id, @RequestBody ProductDTO dto){
 		dto = service.update(id, dto);
 		
 		return ResponseEntity.ok().body(dto);
