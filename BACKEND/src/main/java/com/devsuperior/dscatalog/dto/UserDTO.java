@@ -35,7 +35,6 @@ public class UserDTO implements Serializable{
 		this.lastName = lastName;
 		this.email = email;
 	}
-
 	
 	public UserDTO(User entity) {
 		id = entity.getId();
